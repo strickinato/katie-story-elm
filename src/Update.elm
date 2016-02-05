@@ -7,7 +7,7 @@ import Effects exposing (Effects)
 type Action
     = MouseMove (Int, Int)
     | Viewport (Int, Int)
-    | Alert
+    | Scroll Float
 
 
 update : Action -> Model -> (Model, Effects Action )
@@ -19,6 +19,5 @@ update action model =
         Viewport (x, y) ->
             ({ model | boundX = x, boundY = y }, Effects.none)
 
-        Alert ->
-            ({ model | color = "blue" }, Effects.none)
-
+        Scroll level ->
+            ({ model | scrollLevel = (model.scrollLevel + (floor level))}, Effects.none)

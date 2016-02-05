@@ -8,7 +8,12 @@
 			body { font-family: calibri, helvetica, arial, sans-serif; }</style>
 	</head>
 	<body>
+		<div id="mount" style="width: 800px; height: 600px; overflow: scroll"></div>
+		<div id="test-scrolling-div" style="width: 100px">jdkflakfjdaf dfjk ljfklds jfklas jfkldsa jfdklas jflkdsj flkasjflkasjfjdkflakfjdaf dfjk ljfklds jfklas jfkldsa jfdklas jflkdsj flkasjflkasjfjdkflakfjdaf dfjk ljfklds jfklas jfkldsa jfdklas jflkdsj flkasjflkasjfjdkflakfjdaf dfjk ljfklds jfklas jfkldsa jfdklas jflkdsj flkasjflkasjfjdkflakfjdaf dfjk ljfklds jfklas jfkldsa jfdklas jflkdsj flkasjflkasjfjdkflakfjdaf dfjk ljfklds jfklas jfkldsa jfdklas jflkdsj flkasjflkasjfjdkflakfjdaf dfjk ljfklds jfklas jfkldsa jfdklas jflkdsj flkasjflkasjfjdkflakfjdaf dfjk ljfklds jfklas jfkldsa jfdklas jflkdsj flkasjflkasjfjdkflakfjdaf dfjk ljfklds jfklas jfkldsa jfdklas jflkdsj flkasjflkasjfjdkflakfjdaf dfjk ljfklds jfklas jfkldsa jfdklas jflkdsj flkasjflkasjf</div>
 		<script src="elm.js" type="text/javascript"></script>
-		<script type="text/javascript">Elm.fullscreen(Elm.Main)</script>
+		<script type="text/javascript">
+			var mount = document.getElementById("mount")
+			Elm.embed(Elm.Main, mount)
+		</script>
 	</body>
 </html>

@@ -6,6 +6,7 @@ type alias Model =
   , boundX : Int
   , boundY : Int
   , color: String
+  , scrollLevel : Int
   }
 
 model : Model
@@ -14,5 +15,6 @@ model =
     , y = 300
     , boundX = 0
     , boundY = 0
-    , color = "white"
+    , color = "black"
+    , scrollLevel = 0
     }
