@@ -17,8 +17,21 @@ view address model =
         [  text <| toString model.scrollLevel
         , svg
             (boundingDimensions model)
-            (List.concat [ [ renderBackdrop model ], renderCircles model ])
+            (List.concat
+              [ [ renderBackdrop model ]
+              , renderCircles model
+              , [ renderSquareFast model ]
+              , [ renderSquareSlow model]
+              ])
         ]
+
+renderSquareFast : Model -> Svg
+renderSquareFast model =
+    rect [ x (toString 0), y (toString model.scrollLevel), width "50", height "50", fill "red" ] []
+
+renderSquareSlow : Model -> Svg
+renderSquareSlow model =
+    rect [ x (toString 50), y (toString (floor ((toFloat model.scrollLevel) / 2))), width "50", height "50", fill "green" ] []
 
 renderCircles : Model -> List Svg
 renderCircles model =
@@ -38,15 +51,11 @@ renderCircles model =
 
 circleGenerator : Random.Generator Svg
 circleGenerator =
-    let
-        funct n =
-            circle [ cx (toString n), cy (toString n), r "50", width "50", height "50", fill "white" ] []
-    in
-        Random.map circleGenerator2 (Random.int 0 500)
+    Random.map circleGeneratorRandomizer (Random.int 0 500)
 
 
-circleGenerator2 : Int -> Svg
-circleGenerator2 num =
+circleGeneratorRandomizer : Int -> Svg
+circleGeneratorRandomizer num =
     let
         seed0 = Random.initialSeed num
 
