@@ -6,22 +6,28 @@ import Html
 import Html.Events
 import Html.Attributes
 import Html.Decoder
-import Random
 
-import Model exposing (Model)
+import Model exposing (Model, Drop, scrollPercentage)
 import Model.StoryText
 import Update exposing (Action(..))
 
 
-heightScale : Int
-heightScale =
-    1000
+scaledWomanHeight : Model -> Int
+scaledWomanHeight model =
+    ceiling ((toFloat model.boundY) * model.womanScale)
+
+
+womanScroll : Model -> Int
+womanScroll model =
+    model.scrollLevel * -1
 
 
 view : Signal.Address Action -> Model -> Html.Html
 view address model =
     Html.div
-        [ scrollCapture address, relativePosition ]
+        [ scrollCapture address
+        , Html.Attributes.style [ ("position", "relative") ]
+        ]
         [ renderWoman model
         , renderStory model
         ]
@@ -59,88 +65,54 @@ renderWoman model =
     let
         style =
             Html.Attributes.style
-                [ ("position", "absolute")
-                , ("background", "red")
-                ]
-
-        pullRight =
-            model.boundX // 4
-
+                [ ("position", "absolute") ]
     in
         Html.div
             [ id "woman", style ]
             [ svg
                 [ width (toPixel model.boundX)
-                , height (toPixel (model.boundY * 2))
+                , height (toPixel (scaledWomanHeight model))
                 ]
-                [ image
-                      [ width (toPixel model.boundX)
-                      , height (toPixel (model.boundY * 2))
-                      , xlinkHref "src/assets/woman.png"
-                      , x (toPixel (pullRight))
-                      , y (toString (model.scrollLevel * -1))
-                      ]
-                      []
-                ]
+                ((renderBackgroundWoman model) :: (renderDrops model))
             ]
 
+renderBackgroundWoman : Model -> Svg.Svg
+renderBackgroundWoman model =
+    image
+        [ width (toPixel model.boundX)
+        , height (toPixel (scaledWomanHeight model))
+        , xlinkHref "src/assets/woman.png"
+        , x (toPixel (model.boundX // 4))
+        , y (toString (womanScroll model))
+        ]
+        []
 
-  -- , svg
-  --     (boundingDimensions model)
-  --     (List.concat
-  --       [ renderCircles model
-  --       , [ renderSquareFast model ]
-  --       , [ renderSquareSlow model ]
-  --       ])
+renderDrops : Model -> List Html.Html
+renderDrops model =
+    List.map (renderDrop model) model.drops
 
-renderSquareFast : Model -> Svg
-renderSquareFast model =
-    rect [ x (toString 0), y (toString model.scrollLevel), width "50", height "50", fill "red" ] []
 
-renderSquareSlow : Model -> Svg
-renderSquareSlow model =
-    rect [ x (toString 50), y (toString (floor ((toFloat model.scrollLevel) / 2))), width "50", height "50", fill "green" ] []
-
-renderCircles : Model -> List Svg
-renderCircles model =
+renderDrop : Model -> Drop -> Html.Html
+renderDrop model drop =
     let
-        numCircles =
-            floor ((toFloat model.scrollLevel) / 10)
+        xCoord =
+            floor (((toFloat model.boundX) * 3) / 4 ) + drop.x
 
-        initialSeed =
-            Random.initialSeed 10
+        yCoord =
+            ((scaledWomanHeight model) // 2) + (womanScroll model) + drop.y
 
-        circleGeneratorList =
-            Random.list numCircles circleGenerator
-
+        fadeInValue =
+            bindValueToPercent ((scrollPercentage model) - drop.sequence) * 2
     in
-        fst <| Random.generate circleGeneratorList initialSeed
-
-
-circleGenerator : Random.Generator Svg
-circleGenerator =
-    Random.map circleGeneratorRandomizer (Random.int 0 500)
-
-
-circleGeneratorRandomizer : Int -> Svg
-circleGeneratorRandomizer num =
-    let
-        seed0 = Random.initialSeed num
-
-        (cxValue, seed1) =
-            Random.generate (Random.int 0 800) seed0
-
-        (cyValue, seed2) =
-            Random.generate (Random.int 0 600) seed1
-
-    in
-        circle [ cx (toString cxValue), cy (toString cyValue), r "10", width "10", height "10", fill "white" ] []
-
-
-boundingDimensions : Model -> List Svg.Attribute
-boundingDimensions model =
-    [ width (toString (model.boundX - 1)), height (toString (model.boundY - 10)) ]
-
+        image
+            [ width (toPixel 20)
+            , height (toPixel 20)
+            , opacity (toString fadeInValue)
+            , xlinkHref ("src/assets/pearl-" ++ drop.src)
+            , x (toPixel xCoord)
+            , y (toPixel yCoord)
+            ]
+            []
 
 scrollCapture : Signal.Address Action -> Html.Attribute
 scrollCapture address =
@@ -156,6 +128,13 @@ scrollCapture address =
             Html.Decoder.wheelEvent
             (\event -> Signal.message address (Scroll event.deltaY) )
 
-relativePosition : Html.Attribute
-relativePosition =
-    Html.Attributes.style [ ("position", "relative") ]
+
+bindValueToPercent : Float-> Float
+bindValueToPercent value =
+    if value > 1 then
+        1
+    else if value <= 0 then
+        0
+    else
+        value
+

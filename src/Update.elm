@@ -1,6 +1,6 @@
 module Update where
 
-import Model exposing (Model)
+import Model exposing (Model, highBounding)
 import Effects exposing (Effects)
 
 
@@ -25,16 +25,12 @@ update action model =
               scrollUpdate =
                   model.scrollLevel + (floor level)
 
-              bound =
-                  floor ((toFloat model.boundY) * 1.5)
-
               newScrollLevel =
                   if scrollUpdate <= 0 then
                     0
-                  else if scrollUpdate > bound then
-                    bound
+                  else if scrollUpdate > (highBounding model) then
+                    highBounding model
                   else
                     scrollUpdate
-
           in
             ({ model | scrollLevel = newScrollLevel}, Effects.none)

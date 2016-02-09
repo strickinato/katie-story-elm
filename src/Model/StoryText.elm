@@ -88,4 +88,67 @@ on the floor and Jason Caroll kept moving his fingers inside me.
   , """
 “Tell me to relax,” I told him.
     """
+  , """
+  One late, wintry afternoon, we were hanging out at my house. Our second date. I made us
+  a pot of chamomile tea and we talked about our professor, Murray Baumgarten, whom
+  we both wanted to be our grandfather. We were in my twin’s room because she didn’t
+  have a roommate. We moved to her bed. Things progressed and he started moving his
+  short fingers inside my pussy and it felt good. So good that, twenty minutes later, I felt it
+  happening. I was going to cum. Vaginally. Fuck yeah. I didn’t want to get Erica’s
+  mattress wet, so I told him “let’s get on the floor.” We lied on the ruggot on the floorgot
+  on the floor and Jason Caroll kept moving his fingers inside me.
+    """
+  , """
+“Tell me to relax,” I told him.
+    """
+  , """
+“Tell me to relax,” I told him.
+    """
+  , """
+“Tell me to relax,” I told him.
+    """
+  , """
+Maybe I liked him because it seemed like he was looking for bigger answers. Maybe I
+liked him because he was a stranger to me, disconnected from the time before my
+mother’s death. Or maybe, I was off.
+    """
+  , """
+“Tell me to relax,” I told him.
+    """
+  , """
+Jason had just gotten back to school from this commune in the desert outsidef San Diego,
+where he meditated for three hours, three times a day, every day. One time after class, the
+day he told me he liked my glasses, we walked into the woods behind campus and I asked
+him his thoughts on God. He regally knelt in the redwood dirt and spoke slowly about
+The Greater Power. “I don’t take the Lord’s name in vain and I think everything is holy,”
+he said. Then we walked to the bus stop.
+    """
+  , """
+Maybe I liked him because it seemed like he was looking for bigger answers. Maybe I
+liked him because he was a stranger to me, disconnected from the time before my
+mother’s death. Or maybe, I was off.
+    """
+  , """
+One late, wintry afternoon, we were hanging out at my house. Our second date. I made us
+a pot of chamomile tea and we talked about our professor, Murray Baumgarten, whom
+we both wanted to be our grandfather. We were in my twin’s room because she didn’t
+have a roommate. We moved to her bed. Things progressed and he started moving his
+short fingers inside my pussy and it felt good. So good that, twenty minutes later, I felt it
+happening. I was going to cum. Vaginally. Fuck yeah. I didn’t want to get Erica’s
+mattress wet, so I told him “let’s get on the floor.” We lied on the ruggot on the floorgot
+on the floor and Jason Caroll kept moving his fingers inside me.
+    """
+  , """
+“Tell me to relax,” I told him.
+    """
+  , """
+  One late, wintry afternoon, we were hanging out at my house. Our second date. I made us
+  a pot of chamomile tea and we talked about our professor, Murray Baumgarten, whom
+  we both wanted to be our grandfather. We were in my twin’s room because she didn’t
+  have a roommate. We moved to her bed. Things progressed and he started moving his
+  short fingers inside my pussy and it felt good. So good that, twenty minutes later, I felt it
+  happening. I was going to cum. Vaginally. Fuck yeah. I didn’t want to get Erica’s
+  mattress wet, so I told him “let’s get on the floor.” We lied on the ruggot on the floorgot
+  on the floor and Jason Caroll kept moving his fingers inside me.
+    """
   ]
