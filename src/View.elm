@@ -4,26 +4,94 @@ import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Html
 import Html.Events
+import Html.Attributes
 import Html.Decoder
 import Random
 
 import Model exposing (Model)
+import Model.StoryText
 import Update exposing (Action(..))
+
+
+heightScale : Int
+heightScale =
+    1000
+
 
 view : Signal.Address Action -> Model -> Html.Html
 view address model =
     Html.div
-        [ scrollCapture address ]
-        [  text <| toString model.scrollLevel
-        , svg
-            (boundingDimensions model)
-            (List.concat
-              [ [ renderBackdrop model ]
-              , renderCircles model
-              , [ renderSquareFast model ]
-              , [ renderSquareSlow model]
-              ])
+        [ scrollCapture address, relativePosition ]
+        [ renderWoman model
+        , renderStory model
         ]
+
+renderStory : Model -> Html.Html
+renderStory model =
+    let
+        top =
+            toPixel (model.scrollLevel * -2)
+
+        style =
+            Html.Attributes.style
+                [ ("position", "absolute")
+                , ("width", "50%")
+                , ("top", top)
+                ]
+    in
+        Html.div
+            [ id "story", style ]
+            [ Model.StoryText.presents
+            , Model.StoryText.title
+            , Model.StoryText.byLine
+            , Model.StoryText.author
+            , Model.StoryText.storyText
+            ]
+
+
+toPixel : Int -> String
+toPixel distance =
+    (toString (distance) ++ "px")
+
+
+renderWoman : Model -> Html.Html
+renderWoman model =
+    let
+        style =
+            Html.Attributes.style
+                [ ("position", "absolute")
+                , ("background", "red")
+                ]
+
+        pullRight =
+            model.boundX // 4
+
+    in
+        Html.div
+            [ id "woman", style ]
+            [ svg
+                [ width (toPixel model.boundX)
+                , height (toPixel (model.boundY * 2))
+                ]
+                [ image
+                      [ width (toPixel model.boundX)
+                      , height (toPixel (model.boundY * 2))
+                      , xlinkHref "src/assets/woman.png"
+                      , x (toPixel (pullRight))
+                      , y (toString (model.scrollLevel * -1))
+                      ]
+                      []
+                ]
+            ]
+
+
+  -- , svg
+  --     (boundingDimensions model)
+  --     (List.concat
+  --       [ renderCircles model
+  --       , [ renderSquareFast model ]
+  --       , [ renderSquareSlow model ]
+  --       ])
 
 renderSquareFast : Model -> Svg
 renderSquareFast model =
@@ -65,39 +133,13 @@ circleGeneratorRandomizer num =
         (cyValue, seed2) =
             Random.generate (Random.int 0 600) seed1
 
-        _ = Debug.log "cx" cxValue
-        _ = Debug.log "cy" cyValue
     in
         circle [ cx (toString cxValue), cy (toString cyValue), r "10", width "10", height "10", fill "white" ] []
 
 
-renderBackdrop : Model -> Svg
-renderBackdrop model =
-    rect  ( [fill model.color]
-            |> List.append origin
-            |> List.append (boundingDimensions model)
-          ) []
-
-
-origin : List Svg.Attribute
-origin =
-    [x "0", y "0"]
-
-
 boundingDimensions : Model -> List Svg.Attribute
 boundingDimensions model =
-    [ width (toString 800), height (toString 600) ]
-
-
-maskDefinition : Model -> Svg
-maskDefinition model =
-    defs
-        []
-        [ Svg.mask
-          [ id "mask", width "100", height "100" ]
-          [ circle [ cx (toString model.x), cy (toString model.y), r "100", width "100", height "100", fill "white"] []
-          ]
-        ]
+    [ width (toString (model.boundX - 1)), height (toString (model.boundY - 10)) ]
 
 
 scrollCapture : Signal.Address Action -> Html.Attribute
@@ -113,3 +155,7 @@ scrollCapture address =
             options
             Html.Decoder.wheelEvent
             (\event -> Signal.message address (Scroll event.deltaY) )
+
+relativePosition : Html.Attribute
+relativePosition =
+    Html.Attributes.style [ ("position", "relative") ]

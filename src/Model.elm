@@ -1,12 +1,18 @@
 module Model where
 
 type alias Model =
-  { x : Int
-  , y : Int
-  , boundX : Int
-  , boundY : Int
-  , color: String
-  , scrollLevel : Int
+    { x : Int
+    , y : Int
+    , boundX : Int
+    , boundY : Int
+    , color: String
+    , scrollLevel : Int
+    , drops : List Drop
+    }
+
+type alias Drop =
+  { coords : (Int, Int)
+  , src : String
   }
 
 model : Model
@@ -17,4 +23,9 @@ model =
     , boundY = 0
     , color = "black"
     , scrollLevel = 0
+    , drops = initDrops
     }
+
+initDrops : List Drop
+initDrops =
+    [ { coords = (10, 10), src = "little.png" }]

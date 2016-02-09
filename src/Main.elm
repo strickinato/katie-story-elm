@@ -28,7 +28,7 @@ main =
 
 mouseInput : Signal Action
 mouseInput =
-    Signal.map MouseMove (Primer.prime Mouse.position)
+    Signal.map MouseScroll (Primer.prime Mouse.position)
 
 
 viewport : Signal Action
