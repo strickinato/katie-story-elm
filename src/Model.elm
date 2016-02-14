@@ -5,6 +5,7 @@ type alias Model =
     , y : Int
     , boundX : Int
     , boundY : Int
+    , storyHeight : Int
     , scrollLevel : Int
     , womanScale : Float
     , drops : List Drop
@@ -23,8 +24,9 @@ model =
     , y = 300
     , boundX = 0
     , boundY = 0
+    , storyHeight = 0
     , scrollLevel = 0
-    , womanScale = 1.5
+    , womanScale = 1.0
     , drops = initDrops
     }
 
@@ -46,11 +48,47 @@ initDrops =
     ]
 
 
-highBounding : Model -> Int
-highBounding model =
-    floor ((toFloat model.boundY))
+womanSize : Float
+womanSize = 0.75
+
+womanScrollSpeed : Float
+womanScrollSpeed = 1.5
+
+womanHeight : Model -> Int
+womanHeight model =
+    model.storyHeight
+        |> toFloat
+        |> (*) womanSize
+        |> round
+
+womanScroll : Model -> Int
+womanScroll model =
+    let
+        womanScroll =
+           floor ((toFloat (model.scrollLevel * -1) * womanSize) * womanScrollSpeed)
+
+        maxScroll =
+            ((womanHeight model) - model.boundY)
+
+        _ = Debug.log "WomanScroll" womanScroll
+        _ = Debug.log "maxScroll" maxScroll
+    in
+        if (womanScroll * -1) > maxScroll then
+            (maxScroll * -1)
+        else
+            womanScroll
+
+
+storyScrollRatio : Model -> Float
+storyScrollRatio model =
+    -1 * ((toFloat model.storyHeight) / (toFloat model.boundY))
+
+
+storyScrollTopToBottom : Model -> Int
+storyScrollTopToBottom model =
+    model.storyHeight - model.boundY
 
 
 scrollPercentage : Model -> Float
 scrollPercentage model =
-    toFloat model.scrollLevel / toFloat (highBounding model)
+    toFloat model.scrollLevel / toFloat ((floor ((toFloat model.boundY))))

@@ -1,5 +1,6 @@
 import StartApp
 import Effects
+import Task
 
 import Mouse
 import Window
@@ -13,17 +14,36 @@ import Model exposing (Model, model)
 
 app : StartApp.App Model
 app =
-    StartApp.start
-        { init = (model, Effects.none)
-        , update = update
-        , view = view
-        , inputs = [ mouseInput, viewport ]
-        }
+    let
+        updateStoryHeight =
+            Signal.map (\ num -> SetStoryHeight num) sendStoryHeight
+    in
+        StartApp.start
+            { init = (model, Effects.none)
+            , update = update requestStoryHeightMailbox.address
+            , view = view
+            , inputs = [ mouseInput, viewport, updateStoryHeight ]
+            }
+
 
 
 main : Signal Html.Html
 main =
     app.html
+
+port tasks : Signal (Task.Task Effects.Never ())
+port tasks =
+  app.tasks
+
+
+port sendStoryHeight : Signal Int
+
+requestStoryHeightMailbox : Signal.Mailbox ()
+requestStoryHeightMailbox = Signal.mailbox ()
+
+port requestStoryHeight : Signal ()
+port requestStoryHeight =
+    requestStoryHeightMailbox.signal
 
 
 mouseInput : Signal Action

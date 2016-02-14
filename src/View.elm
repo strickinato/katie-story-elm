@@ -7,7 +7,7 @@ import Html.Events
 import Html.Attributes
 import Html.Decoder
 
-import Model exposing (Model, Drop, scrollPercentage)
+import Model exposing (..)
 import Model.StoryText
 import Update exposing (Action(..))
 
@@ -17,26 +17,21 @@ scaledWomanHeight model =
     ceiling ((toFloat model.boundY) * model.womanScale)
 
 
-womanScroll : Model -> Int
-womanScroll model =
-    model.scrollLevel * -1
-
-
 view : Signal.Address Action -> Model -> Html.Html
 view address model =
     Html.div
         [ scrollCapture address
         , Html.Attributes.style [ ("position", "relative") ]
         ]
-        [ renderWoman model
-        , renderStory model
+        [ renderWomanSection model
+        , renderStorySection model
         ]
 
-renderStory : Model -> Html.Html
-renderStory model =
+renderStorySection : Model -> Html.Html
+renderStorySection model =
     let
         top =
-            toPixel (model.scrollLevel * -2)
+            toPixel (round ((toFloat model.scrollLevel) * -1))
 
         style =
             Html.Attributes.style
@@ -60,8 +55,8 @@ toPixel distance =
     (toString (distance) ++ "px")
 
 
-renderWoman : Model -> Html.Html
-renderWoman model =
+renderWomanSection : Model -> Html.Html
+renderWomanSection model =
     let
         style =
             Html.Attributes.style
@@ -71,19 +66,19 @@ renderWoman model =
             [ id "woman", style ]
             [ svg
                 [ width (toPixel model.boundX)
-                , height (toPixel (scaledWomanHeight model))
+                , height (toPixel (model.storyHeight))
                 ]
-                ((renderBackgroundWoman model) :: (renderDrops model))
+                ((renderWomanImage model) :: (renderDrops model))
             ]
 
-renderBackgroundWoman : Model -> Svg.Svg
-renderBackgroundWoman model =
+renderWomanImage : Model -> Svg.Svg
+renderWomanImage model =
     image
         [ width (toPixel model.boundX)
-        , height (toPixel (scaledWomanHeight model))
+        , height (toPixel (Model.womanHeight model))
         , xlinkHref "src/assets/woman.png"
         , x (toPixel (model.boundX // 4))
-        , y (toString (womanScroll model))
+        , y (toString (Model.womanScroll model))
         ]
         []
 
@@ -99,7 +94,7 @@ renderDrop model drop =
             floor (((toFloat model.boundX) * 3) / 4 ) + drop.x
 
         yCoord =
-            ((scaledWomanHeight model) // 2) + (womanScroll model) + drop.y
+            ((scaledWomanHeight model) // 2) + (model.scrollLevel * -1) + drop.y
 
         fadeInValue =
             bindValueToPercent ((scrollPercentage model) - drop.sequence) * 2
@@ -137,4 +132,3 @@ bindValueToPercent value =
         0
     else
         value
-
