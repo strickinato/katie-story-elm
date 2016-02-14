@@ -36,13 +36,14 @@ update requestStoryHeight action model =
                     scrollUpdate
           in
             ({ model | scrollLevel = newScrollLevel}, Effects.none)
+
         SetStoryHeight height ->
             ({ model | storyHeight = height}, Effects.none)
+
         NoOp ->
             (model, Effects.none)
 
 
 getStoryHeight : Signal.Address () -> Task.Task Effects.Never Action
 getStoryHeight address =
-    let _ = Debug.log "running getStroyHeight" "hi" in
     Task.map (\_ -> NoOp) (Signal.send address ())

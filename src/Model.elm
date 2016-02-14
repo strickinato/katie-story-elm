@@ -7,16 +7,20 @@ type alias Model =
     , boundY : Int
     , storyHeight : Int
     , scrollLevel : Int
-    , womanScale : Float
     , drops : List Drop
     }
 
 type alias Drop =
   { x : Int
   , y : Int
-  , src : String
+  , dropType : DropType
   , sequence : Float
   }
+
+
+type DropType
+    = Big
+    | Small
 
 model : Model
 model =
@@ -26,25 +30,69 @@ model =
     , boundY = 0
     , storyHeight = 0
     , scrollLevel = 0
-    , womanScale = 1.0
     , drops = initDrops
     }
 
 {-
-    x,y coordinates from the center point of the scaled woman
+    x,y percentages from the center point of the woman
 -}
 initDrops : List Drop
 initDrops =
-    [ { x = -80, y = 50, src = "little.png", sequence = 0.2 }
-    , { x = 25, y = 600, src = "little.png", sequence = 0.3 }
-    , { x = -10, y = 580, src = "little.png", sequence = 0.4 }
-    , { x = 10, y = 400, src = "little.png", sequence = 0.45 }
-    , { x = 20, y = 500, src = "little.png", sequence = 0.6 }
-    , { x = 40, y = 600, src = "little.png", sequence = 0.5 }
-    , { x = -15, y = 550, src = "little.png", sequence = 0.55 }
-    , { x = 10, y = 490, src = "little.png", sequence = 0.6 }
-    , { x = -120, y = 300, src = "little.png", sequence = 0.5 }
-    , { x = 15, y = 500, src = "little.png", sequence = 0.9 }
+    [ { x = -12, y = -20, dropType= Small, sequence = 0.1 }
+    , { x = -30, y = -15, dropType= Small, sequence = 0.12 }
+    , { x = -20, y = -11, dropType= Small, sequence = 0.15 }
+    , { x = -10, y = -2, dropType= Small, sequence = 0.11 }
+    , { x = -27, y = -8, dropType= Small, sequence = 0.17 }
+    , { x = -24, y = 5, dropType= Small, sequence = 0.24 }
+    , { x = -30, y = 10, dropType= Big, sequence = 0.3 }
+    , { x = 0, y = 11, dropType= Small, sequence = 0.35 }
+    , { x = 5, y = 27, dropType= Small, sequence = 0.23 }
+    , { x = -7, y = 28, dropType= Small, sequence = 0.36 }
+    , { x = -6, y = 29, dropType= Small, sequence = 0.4 }
+    , { x = -8, y = 35, dropType= Small, sequence = 0.42 }
+    , { x = 0, y = 37, dropType= Big, sequence = 0.44 }
+    , { x = -1, y = 31, dropType= Small, sequence = 0.45 }
+    , { x = -4, y = 34, dropType= Small, sequence = 0.46 }
+    , { x = -1, y = 30, dropType= Small, sequence = 0.49 }
+    , { x = 2, y = 32, dropType= Small, sequence = 0.5 }
+    , { x = -4, y = 34, dropType= Big, sequence = 0.51 }
+    , { x = 9, y = 35, dropType= Big, sequence = 0.53 }
+    , { x = 10, y = 33, dropType= Small, sequence = 0.54 }
+    , { x = -15, y = 39, dropType= Small, sequence = 0.54 }
+    , { x = 4, y = 40, dropType= Small, sequence = 0.55 }
+    , { x = 0, y = 45, dropType= Small, sequence = 0.55 }
+    , { x = -3, y = 41, dropType= Small, sequence = 0.56 }
+    , { x = -1, y = 44, dropType= Small, sequence = 0.56 }
+    , { x = 9, y = 47, dropType= Small, sequence = 0.57 }
+    , { x = -11, y = 31, dropType= Small, sequence = 0.59 }
+    , { x = 9, y = 40, dropType= Small, sequence = 0.61 }
+    , { x = -10, y = 37, dropType= Small, sequence = 0.61 }
+    , { x = -17, y = 41, dropType= Small, sequence = 0.61 }
+    , { x = -11, y = 46, dropType= Small, sequence = 0.61 }
+    , { x = -13, y = 38, dropType= Big, sequence = 0.63 }
+    , { x = -5, y = 33, dropType= Small, sequence = 0.64 }
+    , { x = -29, y = 44, dropType= Small, sequence = 0.64 }
+    , { x = 0, y = 43, dropType= Small, sequence = 0.65 }
+    , { x = -3, y = 29, dropType= Small, sequence = 0.66 }
+    , { x = -15, y = 40, dropType= Small, sequence = 0.66 }
+    , { x = -3, y = 29, dropType= Small, sequence = 0.66 }
+    , { x = 3, y = 42, dropType= Small, sequence = 0.67 }
+    , { x = -19, y = 38, dropType= Small, sequence = 0.67 }
+    , { x = -6, y = 39, dropType= Small, sequence = 0.67 }
+    , { x = -9, y = 43, dropType= Small, sequence = 0.67 }
+    , { x = -9, y = 41, dropType= Small, sequence = 0.67 }
+    , { x = -11, y = 40, dropType= Small, sequence = 0.68 }
+    , { x = -3, y = 39, dropType= Big, sequence = 0.69 }
+    , { x = -18, y = 44, dropType= Small, sequence = 0.70 }
+    , { x = -3, y = 45, dropType= Small, sequence = 0.71 }
+    , { x = 3, y = 42, dropType= Small, sequence = 0.72 }
+    , { x = -14, y = 44, dropType= Small, sequence = 0.73 }
+    , { x = 3, y = 40, dropType= Small, sequence = 0.75 }
+    , { x = 5, y = 43, dropType= Small, sequence = 0.75 }
+    , { x = -16, y = 42, dropType= Small, sequence = 0.77 }
+    , { x = -19, y = 43, dropType= Big, sequence = 0.77 }
+    , { x = -19, y = 45, dropType= Small, sequence = 0.77 }
+    , { x = -11, y = 46, dropType= Small, sequence = 0.80 }
     ]
 
 
@@ -70,8 +118,6 @@ womanScroll model =
         maxScroll =
             ((womanHeight model) - model.boundY)
 
-        _ = Debug.log "WomanScroll" womanScroll
-        _ = Debug.log "maxScroll" maxScroll
     in
         if (womanScroll * -1) > maxScroll then
             (maxScroll * -1)
@@ -91,4 +137,4 @@ storyScrollTopToBottom model =
 
 scrollPercentage : Model -> Float
 scrollPercentage model =
-    toFloat model.scrollLevel / toFloat ((floor ((toFloat model.boundY))))
+    toFloat model.scrollLevel / (toFloat (storyScrollTopToBottom model))

@@ -6,7 +6,7 @@ body { font-family: calibri, helvetica, arial, sans-serif; }
 
 #mount {
   width: 100%;
-  height: 600px;
+  height: 750px;
   overflow: hidden;
   background-image: url("page-background.jpg");
   background-size: cover;
@@ -17,13 +17,12 @@ body { font-family: calibri, helvetica, arial, sans-serif; }
 }
 
 
-#mount #woman {
-  border: 1px solid red;
-}
+#mount #woman {}
 
 #mount #story {
   text-align: center;
   padding-left: 5%;
+  padding-top: 50px;
 }
 
 #mount #story-text {

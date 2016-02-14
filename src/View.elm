@@ -12,10 +12,6 @@ import Model.StoryText
 import Update exposing (Action(..))
 
 
-scaledWomanHeight : Model -> Int
-scaledWomanHeight model =
-    ceiling ((toFloat model.boundY) * model.womanScale)
-
 
 view : Signal.Address Action -> Model -> Html.Html
 view address model =
@@ -84,26 +80,47 @@ renderWomanImage model =
 
 renderDrops : Model -> List Html.Html
 renderDrops model =
-    List.map (renderDrop model) model.drops
-
-
-renderDrop : Model -> Drop -> Html.Html
-renderDrop model drop =
     let
+        womanXOrigin =
+            floor (((toFloat model.boundX) * 3) / 4 )
+
+        womanYOrigin =
+            (Model.womanScroll model) + ((womanHeight model) // 2)
+    in
+        List.map (renderDrop model (womanXOrigin, womanYOrigin)) model.drops
+
+
+renderDrop : Model -> (Int, Int) -> Drop -> Html.Html
+renderDrop model (xOrigin, yOrigin) drop =
+    let
+        xOffset =
+            (drop.x * (model.boundX // 4)) // 100
+
+        yOffset =
+            (drop.y * (womanHeight model)) // 100
+
         xCoord =
-            floor (((toFloat model.boundX) * 3) / 4 ) + drop.x
+            xOrigin + xOffset
 
         yCoord =
-            ((scaledWomanHeight model) // 2) + (model.scrollLevel * -1) + drop.y
+             yOrigin + yOffset
 
         fadeInValue =
-            bindValueToPercent ((scrollPercentage model) - drop.sequence) * 2
+            ((scrollPercentage model) - drop.sequence) * 10
+
+        url =
+            case drop.dropType of
+                Big ->
+                    "src/assets/pearl-big.png"
+                Small ->
+                    "src/assets/pearl-little.png"
+
     in
         image
-            [ width (toPixel 20)
+            [ width (toPixel 21)
             , height (toPixel 20)
             , opacity (toString fadeInValue)
-            , xlinkHref ("src/assets/pearl-" ++ drop.src)
+            , xlinkHref url
             , x (toPixel xCoord)
             , y (toPixel yCoord)
             ]
@@ -122,13 +139,3 @@ scrollCapture address =
             options
             Html.Decoder.wheelEvent
             (\event -> Signal.message address (Scroll event.deltaY) )
-
-
-bindValueToPercent : Float-> Float
-bindValueToPercent value =
-    if value > 1 then
-        1
-    else if value <= 0 then
-        0
-    else
-        value
