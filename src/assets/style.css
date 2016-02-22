@@ -1,24 +1,23 @@
 @import url(https://fonts.googleapis.com/css?family=Alegreya+Sans:100italic);
 @import url(https://fonts.googleapis.com/css?family=Esteban);
 
-html,head,body { padding:0; margin:0; }
-body { font-family: calibri, helvetica, arial, sans-serif; }
-
 #katie-story-mount {
-  width: 100%;
-  height: 750px;
   overflow: hidden;
   background-image: url("page-background.jpg");
   background-size: cover;
+  /*
+  The above attrs are important, but size the div however you need to fit it
+  into the site
+  */
+  width: 100%;
+  height: 750px;
 }
 
-::-webkit-scrollbar {
+#katie-story-mount ::-webkit-scrollbar {
   display: none;
 }
 
-
-#katie-story-mount #woman {
-}
+#katie-story-mount #woman {}
 
 #katie-story-mount #story {
   text-align: center;
@@ -34,6 +33,7 @@ body { font-family: calibri, helvetica, arial, sans-serif; }
 #katie-story-mount h1, h2 {
   font-family: 'Alegreya Sans', sans-serif;
 }
+
 #katie-story-mount p {
   font-family: 'Esteban', serif;
   line-height: 35px;
