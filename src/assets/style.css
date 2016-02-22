@@ -17,12 +17,15 @@ body { font-family: calibri, helvetica, arial, sans-serif; }
 }
 
 
-#mount #woman {}
+#mount #woman {
+  border: 1px solid blue;
+}
 
 #mount #story {
   text-align: center;
   padding-left: 5%;
   padding-top: 50px;
+  border: 1px solid red;
 }
 
 #mount #story-text {

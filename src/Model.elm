@@ -8,6 +8,8 @@ type alias Model =
     , storyHeight : Int
     , scrollLevel : Int
     , drops : List Drop
+    , scrollStatus : ScrollStatus
+    , top : Int
     }
 
 type alias Drop =
@@ -17,6 +19,9 @@ type alias Drop =
   , sequence : Float
   }
 
+type ScrollStatus
+    = Scrolling
+    | Bottom
 
 type DropType
     = Big
@@ -31,6 +36,8 @@ model =
     , storyHeight = 0
     , scrollLevel = 0
     , drops = initDrops
+    , scrollStatus = Scrolling
+    , top = 0
     }
 
 {-
@@ -100,7 +107,7 @@ womanSize : Float
 womanSize = 0.75
 
 womanScrollSpeed : Float
-womanScrollSpeed = 1.5
+womanScrollSpeed = 0.75
 
 womanHeight : Model -> Int
 womanHeight model =
@@ -132,7 +139,7 @@ storyScrollRatio model =
 
 storyScrollTopToBottom : Model -> Int
 storyScrollTopToBottom model =
-    model.storyHeight - model.boundY
+    (model.storyHeight - model.boundY) + 1000
 
 
 scrollPercentage : Model -> Float

@@ -17,12 +17,20 @@ app =
     let
         updateStoryHeight =
             Signal.map (\ num -> SetStoryHeight num) sendStoryHeight
+
+        updateTop =
+            Signal.map (\ num -> SetTop num) sendTop
+
+        addresses =
+            { storyHeightAddress = requestStoryHeightMailbox.address
+            , topAddress = requestTopMailbox.address
+            }
     in
         StartApp.start
             { init = (model, Effects.none)
-            , update = update requestStoryHeightMailbox.address
+            , update = update addresses
             , view = view
-            , inputs = [ mouseInput, viewport, updateStoryHeight ]
+            , inputs = [ mouseInput, viewport, updateStoryHeight, updateTop ]
             }
 
 
@@ -44,6 +52,15 @@ requestStoryHeightMailbox = Signal.mailbox ()
 port requestStoryHeight : Signal ()
 port requestStoryHeight =
     requestStoryHeightMailbox.signal
+
+port sendTop : Signal Int
+
+requestTopMailbox : Signal.Mailbox ()
+requestTopMailbox = Signal.mailbox ()
+
+port requestTop : Signal ()
+port requestTop =
+    requestTopMailbox.signal
 
 
 mouseInput : Signal Action

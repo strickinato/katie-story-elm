@@ -15,13 +15,20 @@ import Update exposing (Action(..))
 
 view : Signal.Address Action -> Model -> Html.Html
 view address model =
-    Html.div
-        [ scrollCapture address
-        , Html.Attributes.style [ ("position", "relative") ]
-        ]
-        [ renderWomanSection model
-        , renderStorySection model
-        ]
+    let
+        attributes =
+            if model.top >= 0 then
+                [ Html.Attributes.style [ ("position", "relative")] ]
+            else
+                [ scrollCapture address model
+                , Html.Attributes.style [ ("position", "relative")]
+                ]
+    in
+        Html.div
+            attributes
+            [ renderWomanSection model
+            , renderStorySection model
+            ]
 
 renderStorySection : Model -> Html.Html
 renderStorySection model =
@@ -56,7 +63,8 @@ renderWomanSection model =
     let
         style =
             Html.Attributes.style
-                [ ("position", "absolute") ]
+                [ ("position", "absolute")
+                , ("overflow", "hidden") ]
     in
         Html.div
             [ id "woman", style ]
@@ -106,7 +114,7 @@ renderDrop model (xOrigin, yOrigin) drop =
              yOrigin + yOffset
 
         fadeInValue =
-            ((scrollPercentage model) - drop.sequence) * 10
+            ((scrollPercentage model) - drop.sequence - 0.2) * 10
 
         url =
             case drop.dropType of
@@ -126,11 +134,11 @@ renderDrop model (xOrigin, yOrigin) drop =
             ]
             []
 
-scrollCapture : Signal.Address Action -> Html.Attribute
-scrollCapture address =
+scrollCapture : Signal.Address Action -> Model -> Html.Attribute
+scrollCapture address model =
     let
         options =
-            { stopPropagation = False
+            { stopPropagation = True
             , preventDefault = True
             }
     in
