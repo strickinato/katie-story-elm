@@ -15,17 +15,14 @@ import Update exposing (Action(..))
 
 view : Signal.Address Action -> Model -> Html.Html
 view address model =
-    let
-        attributes =
-            [ scrollCapture address model
-            , Html.Attributes.style [ ("position", "relative")]
-            ]
-    in
-        Html.div
-            attributes
-            [ renderWomanSection model
-            , renderStorySection model
-            ]
+    Html.div
+        [ id "katie-story-container"
+        , scrollCaptureHandler address model
+        ]
+        [ renderWomanSection model
+        , renderStorySection model
+        ]
+
 
 renderStorySection : Model -> Html.Html
 renderStorySection model =
@@ -136,8 +133,8 @@ renderDrop model (xOrigin, yOrigin) drop =
             ]
             []
 
-scrollCapture : Signal.Address Action -> Model -> Html.Attribute
-scrollCapture address model =
+scrollCaptureHandler : Signal.Address Action -> Model -> Html.Attribute
+scrollCaptureHandler address model =
     let
         (isPreventDefault, action) =
             case model.scrollStatus of

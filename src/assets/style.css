@@ -13,6 +13,10 @@
   height: 750px;
 }
 
+#katie-story-mount #katie-story-container{
+  position: relative;
+}
+
 #katie-story-mount ::-webkit-scrollbar {
   display: none;
 }
