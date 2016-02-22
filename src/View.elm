@@ -17,9 +17,9 @@ view : Signal.Address Action -> Model -> Html.Html
 view address model =
     let
         attributes =
-            if model.top >= 0 then
-                [ Html.Attributes.style [ ("position", "relative")] ]
-            else
+            -- if model.top >= 0 then
+            --     [ Html.Attributes.style [ ("position", "relative")] ]
+            -- else
                 [ scrollCapture address model
                 , Html.Attributes.style [ ("position", "relative")]
                 ]
@@ -63,8 +63,7 @@ renderWomanSection model =
     let
         style =
             Html.Attributes.style
-                [ ("position", "absolute")
-                , ("overflow", "hidden") ]
+                [ ("position", "absolute") ]
     in
         Html.div
             [ id "woman", style ]
@@ -138,9 +137,10 @@ scrollCapture : Signal.Address Action -> Model -> Html.Attribute
 scrollCapture address model =
     let
         options =
-            { stopPropagation = True
+            { stopPropagation = False
             , preventDefault = True
             }
+
     in
         Html.Events.onWithOptions
             "wheel"

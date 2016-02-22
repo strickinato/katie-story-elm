@@ -6,26 +6,29 @@ import Task
 import Signal
 
 type Action
-    = MouseScroll (Int, Int)
-    | Viewport (Int, Int)
+    = Viewport (Int, Int)
     | SetStoryHeight Int
     | Scroll Float
+    | ScrollParent Float
     | SetTop Int
     | NoOp
 
 type alias Addresses =
     { storyHeightAddress : Signal.Address ()
     , topAddress : Signal.Address ()
+    , scrollParentAddress : Signal.Address Float
     }
 
 
 update : Addresses -> Action -> Model -> (Model, Effects Action )
 update addresses action model =
-    let _ = Debug.log "hi" model.top in
-    case action of
-        MouseScroll (x, y) ->
-            ({ model | x = x, y = y }, Effects.none)
+    let
+        _ = Debug.log "Scroll Level: " model.scrollLevel
+        _ = Debug.log "Scroll Scroll Status: " model.scrollStatus
+        _ = Debug.log "Scroll Top: " model.top
 
+    in
+    case action of
         Viewport (x, y) ->
             ({ model | boundX = x, boundY = y }, Effects.task (pingAddress addresses.storyHeightAddress))
 
@@ -43,12 +46,12 @@ update addresses action model =
                       (scrollUpdate, Scrolling)
 
                 newModel =
-                    if model.top >= 0 then
-                        { model | scrollLevel = newScrollLevel, scrollStatus = newScrollStatus}
-                    else
-                        { model | scrollLevel = newScrollLevel, scrollStatus = newScrollStatus}
+                    { model | scrollLevel = newScrollLevel, scrollStatus = newScrollStatus}
             in
                 (newModel, Effects.task (pingAddress addresses.topAddress))
+
+        ScrollParent level ->
+            (model, Effects.task (Task.map (\_ -> NoOp) (Signal.send addresses.scrollParentAddress level)))
 
         SetStoryHeight height ->
             ({ model | storyHeight = height}, Effects.none)
@@ -57,7 +60,7 @@ update addresses action model =
             ({ model | top = newTop }, Effects.none)
 
         NoOp ->
-            (model, Effects.none)
+            (model, Effects.task (pingAddress addresses.topAddress))
 
 
 pingAddress : Signal.Address () -> Task.Task Effects.Never Action

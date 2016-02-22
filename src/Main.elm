@@ -2,7 +2,6 @@ import StartApp
 import Effects
 import Task
 
-import Mouse
 import Window
 import Primer
 
@@ -24,16 +23,15 @@ app =
         addresses =
             { storyHeightAddress = requestStoryHeightMailbox.address
             , topAddress = requestTopMailbox.address
+            , scrollParentAddress = scrollParentMailbox.address
             }
     in
         StartApp.start
             { init = (model, Effects.none)
             , update = update addresses
             , view = view
-            , inputs = [ mouseInput, viewport, updateStoryHeight, updateTop ]
+            , inputs = [ viewport, updateStoryHeight, updateTop ]
             }
-
-
 
 main : Signal Html.Html
 main =
@@ -53,6 +51,13 @@ port requestStoryHeight : Signal ()
 port requestStoryHeight =
     requestStoryHeightMailbox.signal
 
+scrollParentMailbox : Signal.Mailbox Float
+scrollParentMailbox = Signal.mailbox 0.0
+
+port scrollParent : Signal Float
+port scrollParent =
+    scrollParentMailbox.signal
+
 port sendTop : Signal Int
 
 requestTopMailbox : Signal.Mailbox ()
@@ -61,11 +66,6 @@ requestTopMailbox = Signal.mailbox ()
 port requestTop : Signal ()
 port requestTop =
     requestTopMailbox.signal
-
-
-mouseInput : Signal Action
-mouseInput =
-    Signal.map MouseScroll (Primer.prime Mouse.position)
 
 
 viewport : Signal Action

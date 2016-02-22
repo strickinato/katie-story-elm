@@ -11,10 +11,10 @@ body { font-family: calibri, helvetica, arial, sans-serif; }
   background-image: url("page-background.jpg");
   background-size: cover;
 }
-
+/*
 ::-webkit-scrollbar {
   display: none;
-}
+}*/
 
 
 #mount #woman {

@@ -28,8 +28,14 @@
 				mountedApp.ports.sendTop.send(top);
 			};
 
+			scrollParent = function(scrollAmount) {
+				var currentTop = document.body.scrollTop;
+				document.body.scrollTop = currentTop + scrollAmount;
+			}
+
 			mountedApp.ports.requestStoryHeight.subscribe(getStoryHeight);
 			mountedApp.ports.requestTop.subscribe(getTop);
+			mountedApp.ports.scrollParent.subscribe(scrollParent);
 
 		</script>
 	</body>
