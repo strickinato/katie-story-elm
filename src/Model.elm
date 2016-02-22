@@ -131,11 +131,6 @@ womanScroll model =
             womanScroll
 
 
-storyScrollRatio : Model -> Float
-storyScrollRatio model =
-    -1 * ((toFloat model.storyHeight) / (toFloat model.boundY))
-
-
 storyScrollTopToBottom : Model -> Int
 storyScrollTopToBottom model =
     (model.storyHeight - model.boundY) + 1000
