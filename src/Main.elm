@@ -15,7 +15,7 @@ app : StartApp.App Model
 app =
     let
         updateStoryHeight =
-            Signal.map (\ num -> SetStoryHeight num) sendStoryHeight
+            Signal.map (\num -> SetStoryHeight num) sendStoryHeight
 
         addresses =
             { storyHeightAddress = requestStoryHeightMailbox.address }
@@ -27,9 +27,11 @@ app =
             , inputs = [ viewport, updateStoryHeight ]
             }
 
+
 main : Signal Html.Html
 main =
     app.html
+
 
 port tasks : Signal (Task.Task Effects.Never ())
 port tasks =
