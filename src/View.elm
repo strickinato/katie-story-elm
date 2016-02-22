@@ -89,11 +89,18 @@ renderWomanImage model =
 renderDrops : Model -> List Html.Html
 renderDrops model =
     let
+        {- center of woman is three quarters from the left -}
         womanXOrigin =
-            floor (((toFloat model.boundX) * 3) / 4 )
+            model.boundX
+                |> toFloat
+                |> (*) 0.75
+                |> floor
+
+        halfOfWomanHeight =
+            (Model.womanHeight model) // 2
 
         womanYOrigin =
-            (Model.womanDistanceFromTop model) + ((Model.womanHeight model) // 2)
+            (Model.womanDistanceFromTop model) + halfOfWomanHeight
     in
         List.map (renderDrop model (womanXOrigin, womanYOrigin)) model.drops
 
@@ -113,15 +120,21 @@ renderDrop model (xOrigin, yOrigin) drop =
         yCoord =
              yOrigin + yOffset
 
+        startNudge =
+            -0.1
+
+        fadeSpeed =
+            12
+
         fadeInValue =
-            ((scrollPercentage model) - drop.sequence - 0.2) * 10
+            ((scrollPercentage model) - drop.sequence + startNudge) * fadeSpeed
 
         url =
             case drop.dropType of
                 Big ->
-                    "src/assets/pearl-big.png"
+                    "assets/pearl-big.png"
                 Small ->
-                    "src/assets/pearl-little.png"
+                    "assets/pearl-little.png"
 
     in
         image

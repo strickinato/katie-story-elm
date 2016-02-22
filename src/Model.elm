@@ -108,7 +108,7 @@ womanScrollSpeed = 0.75
 
 
 womanAssetLocation : String
-womanAssetLocation = "src/assets/woman.gif"
+womanAssetLocation = "assets/woman.gif"
 
 
 womanHeight : Model -> Int
@@ -133,7 +133,6 @@ womanDistanceFromTop model =
             (maxScroll * -1)
         else
             womanScroll
-
 
 
 storyScrollTopToBottom : Model -> Int
