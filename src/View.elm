@@ -1,13 +1,13 @@
 module View where
 
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
+import Svg exposing (svg, image)
+import Svg.Attributes exposing (id, width, height, overflow, xlinkHref, x, y, opacity)
 import Html
 import Html.Events
 import Html.Attributes
 import Html.Decoder
 
-import Model exposing (..)
+import Model exposing (Model, DropType(..), Drop, ScrollStatus(..), womanHeight, scrollPercentage)
 import Model.StoryText
 import Update exposing (Action(..))
 
@@ -17,12 +17,9 @@ view : Signal.Address Action -> Model -> Html.Html
 view address model =
     let
         attributes =
-            -- if model.top >= 0 then
-            --     [ Html.Attributes.style [ ("position", "relative")] ]
-            -- else
-                [ scrollCapture address model
-                , Html.Attributes.style [ ("position", "relative")]
-                ]
+            [ scrollCapture address model
+            , Html.Attributes.style [ ("position", "relative")]
+            ]
     in
         Html.div
             attributes
@@ -41,6 +38,7 @@ renderStorySection model =
                 [ ("position", "absolute")
                 , ("width", "50%")
                 , ("top", top)
+                , ("overflow", "hidden")
                 ]
     in
         Html.div
@@ -63,13 +61,17 @@ renderWomanSection model =
     let
         style =
             Html.Attributes.style
-                [ ("position", "absolute") ]
+                [ ("position", "absolute")
+                , ("overflow", "hidden")
+                , ("height", toPixel (model.storyHeight) )
+                ]
     in
         Html.div
             [ id "woman", style ]
             [ svg
                 [ width (toPixel model.boundX)
                 , height (toPixel (model.storyHeight))
+                , overflow "hidden"
                 ]
                 ((renderWomanImage model) :: (renderDrops model))
             ]
@@ -79,9 +81,10 @@ renderWomanImage model =
     image
         [ width (toPixel model.boundX)
         , height (toPixel (Model.womanHeight model))
-        , xlinkHref "src/assets/woman.png"
+        , xlinkHref "src/assets/woman.gif"
         , x (toPixel (model.boundX // 4))
         , y (toString (Model.womanScroll model))
+        , overflow "hidden"
         ]
         []
 
@@ -136,9 +139,18 @@ renderDrop model (xOrigin, yOrigin) drop =
 scrollCapture : Signal.Address Action -> Model -> Html.Attribute
 scrollCapture address model =
     let
+        (isPreventDefault, action) =
+            case model.scrollStatus of
+                Scrolling ->
+                    (True, (\event -> Signal.message address (Scroll event.deltaY) ) )
+                Bottom ->
+                    (False, \_ -> Signal.message address NoOp)
+                Top ->
+                    (False, \_ -> Signal.message address NoOp)
+
         options =
             { stopPropagation = False
-            , preventDefault = True
+            , preventDefault = isPreventDefault
             }
 
     in

@@ -4,39 +4,37 @@
 html,head,body { padding:0; margin:0; }
 body { font-family: calibri, helvetica, arial, sans-serif; }
 
-#mount {
+#katie-story-mount {
   width: 100%;
   height: 750px;
   overflow: hidden;
   background-image: url("page-background.jpg");
   background-size: cover;
 }
-/*
+
 ::-webkit-scrollbar {
   display: none;
-}*/
-
-
-#mount #woman {
-  border: 1px solid blue;
 }
 
-#mount #story {
+
+#katie-story-mount #woman {
+}
+
+#katie-story-mount #story {
   text-align: center;
   padding-left: 5%;
   padding-top: 50px;
-  border: 1px solid red;
 }
 
-#mount #story-text {
+#katie-story-mount #story-text {
   text-align: justify;
   color: #181818;
 }
 
-#mount h1, h2 {
+#katie-story-mount h1, h2 {
   font-family: 'Alegreya Sans', sans-serif;
 }
-#mount p {
+#katie-story-mount p {
   font-family: 'Esteban', serif;
   line-height: 35px;
   font-size: 18px;

@@ -21,6 +21,7 @@ type alias Drop =
 
 type ScrollStatus
     = Scrolling
+    | Top
     | Bottom
 
 type DropType
@@ -40,9 +41,7 @@ model =
     , top = 0
     }
 
-{-
-    x,y percentages from the center point of the woman
--}
+
 initDrops : List Drop
 initDrops =
     [ { x = -12, y = -20, dropType= Small, sequence = 0.1 }
