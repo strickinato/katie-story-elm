@@ -4,13 +4,13 @@ import Svg exposing (svg, image)
 import Svg.Attributes exposing (id, width, height, overflow, xlinkHref, x, y, opacity)
 import Html
 import Html.Events
-import Html.Attributes
+import Html.Attributes exposing (style)
 import Html.Decoder
 
-import Model exposing (Model, DropType(..), Drop, ScrollStatus(..), womanHeight, scrollPercentage)
+import Model exposing (Model, DropType(..), Drop, ScrollStatus(..), scrollPercentage)
 import Model.StoryText
 import Update exposing (Action(..))
-
+import Util exposing (toPixel)
 
 
 view : Signal.Address Action -> Model -> Html.Html
@@ -27,19 +27,17 @@ view address model =
 renderStorySection : Model -> Html.Html
 renderStorySection model =
     let
-        top =
-            toPixel (round ((toFloat model.scrollLevel) * -1))
+        topValueBasedOnScroll =
+            toPixel (model.scrollLevel * -1)
 
-        style =
-            Html.Attributes.style
-                [ ("position", "absolute")
-                , ("width", "50%")
-                , ("top", top)
-                , ("overflow", "hidden")
-                ]
+        storySectionStyle =
+            style [ ("top", topValueBasedOnScroll) ]
+
     in
         Html.div
-            [ id "story", style ]
+            [ id "katie-story-story-section"
+            , storySectionStyle
+            ]
             [ Model.StoryText.presents
             , Model.StoryText.title
             , Model.StoryText.byLine
@@ -48,42 +46,45 @@ renderStorySection model =
             ]
 
 
-toPixel : Int -> String
-toPixel distance =
-    (toString (distance) ++ "px")
-
-
 renderWomanSection : Model -> Html.Html
 renderWomanSection model =
     let
-        style =
-            Html.Attributes.style
-                [ ("position", "absolute")
-                , ("overflow", "hidden")
-                , ("height", toPixel (model.storyHeight) )
-                ]
+        womanSectionStyle =
+            style [ ( "height", toPixel model.storyHeight ) ]
+
+        womanSections =
+            (renderWomanImage model) :: (renderDrops model)
+
     in
         Html.div
-            [ id "woman", style ]
+            [ id "katie-story-woman-section"
+            , womanSectionStyle
+            ]
             [ svg
                 [ width (toPixel model.boundX)
                 , height (toPixel (model.storyHeight))
                 , overflow "hidden"
                 ]
-                ((renderWomanImage model) :: (renderDrops model))
+                womanSections
             ]
+
 
 renderWomanImage : Model -> Svg.Svg
 renderWomanImage model =
-    image
-        [ width (toPixel model.boundX)
-        , height (toPixel (Model.womanHeight model))
-        , xlinkHref "src/assets/woman.gif"
-        , x (toPixel (model.boundX // 4))
-        , y (toString (Model.womanScroll model))
-        , overflow "hidden"
-        ]
-        []
+    let
+        nudgeOneQuarter =
+            (model.boundX // 4)
+    in
+        image
+            [ width (toPixel model.boundX)
+            , height (toPixel (Model.womanHeight model))
+            , xlinkHref (Model.womanAssetLocation)
+            , x (toPixel nudgeOneQuarter)
+            , y (toPixel (Model.womanDistanceFromTop model))
+            , overflow "hidden"
+            ]
+            []
+
 
 renderDrops : Model -> List Html.Html
 renderDrops model =
@@ -92,7 +93,7 @@ renderDrops model =
             floor (((toFloat model.boundX) * 3) / 4 )
 
         womanYOrigin =
-            (Model.womanScroll model) + ((womanHeight model) // 2)
+            (Model.womanDistanceFromTop model) + ((Model.womanHeight model) // 2)
     in
         List.map (renderDrop model (womanXOrigin, womanYOrigin)) model.drops
 
@@ -104,7 +105,7 @@ renderDrop model (xOrigin, yOrigin) drop =
             (drop.x * (model.boundX // 4)) // 100
 
         yOffset =
-            (drop.y * (womanHeight model)) // 100
+            (drop.y * (Model.womanHeight model)) // 100
 
         xCoord =
             xOrigin + xOffset
@@ -136,14 +137,14 @@ renderDrop model (xOrigin, yOrigin) drop =
 scrollCaptureHandler : Signal.Address Action -> Model -> Html.Attribute
 scrollCaptureHandler address model =
     let
-        (isPreventDefault, action) =
+        isPreventDefault =
             case model.scrollStatus of
                 Scrolling ->
-                    (True, (\event -> Signal.message address (Scroll event.deltaY) ) )
+                    True
                 Bottom ->
-                    (False, \_ -> Signal.message address NoOp)
+                    False
                 Top ->
-                    (False, \_ -> Signal.message address NoOp)
+                    False
 
         options =
             { stopPropagation = False

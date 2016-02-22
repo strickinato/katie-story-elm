@@ -1,9 +1,7 @@
 module Model where
 
 type alias Model =
-    { x : Int
-    , y : Int
-    , boundX : Int
+    { boundX : Int
     , boundY : Int
     , storyHeight : Int
     , scrollLevel : Int
@@ -28,11 +26,10 @@ type DropType
     = Big
     | Small
 
+
 model : Model
 model =
-    { x = 300
-    , y = 300
-    , boundX = 0
+    { boundX = 0
     , boundY = 0
     , storyHeight = 0
     , scrollLevel = 0
@@ -105,8 +102,14 @@ initDrops =
 womanSize : Float
 womanSize = 0.75
 
+
 womanScrollSpeed : Float
 womanScrollSpeed = 0.75
+
+
+womanAssetLocation : String
+womanAssetLocation = "src/assets/woman.gif"
+
 
 womanHeight : Model -> Int
 womanHeight model =
@@ -115,8 +118,9 @@ womanHeight model =
         |> (*) womanSize
         |> round
 
-womanScroll : Model -> Int
-womanScroll model =
+
+womanDistanceFromTop : Model -> Int
+womanDistanceFromTop model =
     let
         womanScroll =
            floor ((toFloat (model.scrollLevel * -1) * womanSize) * womanScrollSpeed)
@@ -129,6 +133,7 @@ womanScroll model =
             (maxScroll * -1)
         else
             womanScroll
+
 
 
 storyScrollTopToBottom : Model -> Int

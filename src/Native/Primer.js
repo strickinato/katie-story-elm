@@ -1,3 +1,6 @@
+// adapted from
+// https://github.com/coreytrampe/elm-signal-primer
+
 Elm.Native.Primer = Elm.Native.Primer || {};
 Elm.Native.Primer.make = function(elm) {
     elm.Native = elm.Native || {};
